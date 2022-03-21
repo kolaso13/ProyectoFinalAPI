@@ -9,85 +9,85 @@ using WebApiAnimeProyecto.Models;
 
 namespace WebApiTiempoProyecto.Controllers
 {
-    public class AnimeController : Controller
+    public class UserController : Controller
     {
         private readonly MVCpruebaContext _context;
 
-        public AnimeController(MVCpruebaContext context)
+        public UserController(MVCpruebaContext context)
         {
             _context = context;
         }
 
-        // GET: Anime
+        // GET: User
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AnimeData.ToListAsync());
+            return View(await _context.User.ToListAsync());
         }
 
-        // GET: Anime/Details/5
-        public async Task<IActionResult> Details(string id)
+        // GET: User/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animeData = await _context.AnimeData
-                .FirstOrDefaultAsync(m => m.Name == id);
-            if (animeData == null)
+            var user = await _context.User
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(animeData);
+            return View(user);
         }
 
-        // GET: Anime/Create
+        // GET: User/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Anime/Create
+        // POST: User/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Chapters,Image,Studio,Date,Genre")] AnimeData animeData)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Username,Role,Password")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(animeData);
+                _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(animeData);
+            return View(user);
         }
 
-        // GET: Anime/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        // GET: User/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animeData = await _context.AnimeData.FindAsync(id);
-            if (animeData == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(animeData);
+            return View(user);
         }
 
-        // POST: Anime/Edit/5
+        // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,Description,Chapters,Image,Studio,Date,Genre")] AnimeData animeData)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Username,Role,Password")] User user)
         {
-            if (id != animeData.Name)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace WebApiTiempoProyecto.Controllers
             {
                 try
                 {
-                    _context.Update(animeData);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AnimeDataExists(animeData.Name))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -112,41 +112,41 @@ namespace WebApiTiempoProyecto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(animeData);
+            return View(user);
         }
 
-        // GET: Anime/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        // GET: User/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animeData = await _context.AnimeData
-                .FirstOrDefaultAsync(m => m.Name == id);
-            if (animeData == null)
+            var user = await _context.User
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(animeData);
+            return View(user);
         }
 
-        // POST: Anime/Delete/5
+        // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var animeData = await _context.AnimeData.FindAsync(id);
-            _context.AnimeData.Remove(animeData);
+            var user = await _context.User.FindAsync(id);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AnimeDataExists(string id)
+        private bool UserExists(int id)
         {
-            return _context.AnimeData.Any(e => e.Name == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }

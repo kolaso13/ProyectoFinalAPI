@@ -38,7 +38,7 @@ namespace WebApiAnimeProyecto
             // configure DI for application services
             services.AddScoped<IAuthService, AuthService>();
 
-            services.AddDbContext<AnimeContext>(opt =>
+            services.AddDbContext<MVCpruebaContext>(opt =>
                                                opt.UseSqlServer(Configuration.GetConnectionString("AnimeContext")));
             services.AddSwaggerGen(c =>
             {
@@ -68,6 +68,9 @@ namespace WebApiAnimeProyecto
                 });
                 // Fin authorize
             });
+
+            services.AddDbContext<MVCpruebaContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MVCpruebaContext")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
